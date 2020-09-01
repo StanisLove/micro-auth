@@ -1,0 +1,49 @@
+version: '2.4'
+
+services:
+  sinatra:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    image: your_image_name:1.0
+    tmpfs:
+      - /tmp
+    stdin_open: true
+    tty: true
+    command: >
+      bash -c "(bundle check || bundle install) &&
+      bin/puma -p 3500"
+    ports:
+      - 3500:3500
+    volumes:
+      - bundle:/bundle
+      - .:/app:cached
+    environment:
+      - RACK_ENV=${RACK_ENV:-development}
+      - HISTFILE=/app/log/.bash_history
+      - PSQL_HISTFILE=/app/log/.psql_history
+      - EDITOR=vi
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  postgres:
+    restart: always
+    image: postgres:10.3
+    volumes:
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - postgres:/var/lib/postgresql/data
+      - ./log:/root/log:cached
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=username
+      - POSTGRES_PASSWORD=password
+      - PSQL_HISTFILE=/root/log/.psql_history
+    healthcheck:
+      test: pg_isready -U postgres -h 127.0.0.1
+      interval: 5s
+
+volumes:
+  postgres:
+  bundle:

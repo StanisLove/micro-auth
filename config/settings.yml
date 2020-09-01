@@ -1,0 +1,9 @@
+db:
+  adapter: postgresql
+  host: postgres
+  user: username
+  password: password
+  database: theatre_development
+  port: 5432
+pagination:
+  page_size: 10
