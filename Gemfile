@@ -18,8 +18,12 @@ gem 'i18n'
 gem 'pg'
 gem 'sequel'
 
+gem 'bcrypt'
+gem 'jwt'
+
 gem 'dry-monads'
 gem 'dry-validation'
+gem 'sequel_secure_password'
 
 gem 'activesupport', '~> 6.0.0', require: false
 gem 'fast_jsonapi'

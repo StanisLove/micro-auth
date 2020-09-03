@@ -8,4 +8,8 @@ RSpec.configure do |config|
   end
 end
 
+# Associated object must be saved in Sequel
+# https://stackoverflow.com/questions/43590251/associated-object-does-not-have-a-primary-key/43592300#43592300
+FactoryBot.use_parent_strategy = false
+
 FactoryBot.define { to_create(&:save) }

@@ -1,3 +1,5 @@
+app:
+  secret: secret
 db:
   adapter: postgresql
   host: postgres
